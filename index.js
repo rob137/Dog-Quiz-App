@@ -325,7 +325,7 @@ function giveFeedback(result, userAnswer, correctButton) {
 	console.log('giveFeedback() ran.');
 	const htmlToReplaceWithFeedback = $('.progress-and-result');
 	if (result) {
-		htmlToReplaceWithFeedback.text(`That's right!`);
+		htmlToReplaceWithFeedback.text(`That's right - it's a ${$(userAnswer).val()}!`);
 	} else {
 		htmlToReplaceWithFeedback.text(`Sorry! You clicked ${$(userAnswer).val()}, but the correct answer was ${$(correctButton).val()}.`);
 	}
