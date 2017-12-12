@@ -1,0 +1,123 @@
+* {
+	text-align: center;
+	font-family: 'Roboto', sans-serif;
+}
+
+body {
+	background-color: #F6F9FD;
+}
+
+header {
+	background-color: #FE9E16;
+	color: #292929; 
+	height: 19vh;
+	padding-top: 2vh;
+	border-bottom: solid 0.25vh #E6E4E4;
+}
+
+header h1 {
+	font-size: 5vh;
+	margin:0;
+	margin-top: 1vh;
+}
+
+header p {
+	font-size: 3vh;
+}
+
+.paw-print {
+	width: 6vh;
+}
+
+.dog-pic {
+	padding-top: 2vh;
+
+	height: 35vh;
+	width: auto;
+
+	border-radius: 7px;
+}
+
+button, input {
+	color: #292929;
+	background-color: #FFF4D2;
+	border: solid #FEEAAB;
+	border-radius: 3%;
+	overflow-wrap: break-word;
+}
+
+.button-next {
+	margin-top: 1vh;
+	width: 26vh;
+	font-size: 2.5vh;
+}
+
+.hidden {
+	visibility: hidden;
+
+}
+
+.progress-and-result {
+	font-size: 2.2vh;
+	margin: 0.5vh 0 0 0;
+	height: 0vh;
+	margin-top: 2vh;
+	margin-bottom: 6.5vh;
+}
+
+.button-start {
+	margin-top: 7vh;
+	font-size: 6vh;
+	height: 18vh;
+	width: 40vw;
+	max-width: 50vh;
+}
+
+.button-start-again {
+	margin-top: 4vh;
+	font-size: 5vh;
+	height: 18vh;
+	width: 70vw;
+	max-width: 50vh;
+	max-width: 60vh;
+}
+
+.button-start-again span {
+	margin-top: 10px;
+}
+
+
+.button-answer {
+ 	width: 26vh;
+	height: 10vh;
+	font-size: 2.5vh;
+	margin: 1vh;
+}
+
+.correct {
+	background-color: #d3ffd8;
+	border: solid #4dbc3c;
+}
+
+.incorrect {
+	background-color: #ffc1c1;
+	border: solid #ff3f3f;
+}
+
+.heading-success-failure {
+	font-size: 3vh;
+}
+
+.img-success-failure {
+	height: 40vh;
+	max-width: 80vw;
+}
+
+
+
+/*
+
+#FE9E16 banner background
+#FE9E16 button 
+#603104 icon in button
+*/
