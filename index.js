@@ -95,10 +95,7 @@ const quizData = [
 ];
 
 
-// These two arrays contain gifs objects.  These will be used for displaying
-// for displaying gifs on the final page.   
-// A score greater than 6/10 will receive a success gif.
-// Gifs within each array are chosen at random by loadResultsPageHtml().
+// These two arrays contain gifs objects for displaying on the results page.   
 const successGifs = 
 	[
 		{
@@ -135,15 +132,11 @@ const failureGifs =
 // score tracks how many questions have been answered correctly.
 let questionCount = 0, score = 0;
 
-// The .page-loader-button class is held by the 'Start' button at the beginning
-// of the quiz.  It is also held by the 'Next Question' button on each question
-// page.  
-// handlePageLoaderButtonClicked() listens for clicks and checks to see whether 
-// the quiz is on the final question.  If the quiz is on the final question, the
-// final page is loaded. Else, the next question is loaded.
+
+// handlePageLoaderButtonClicked() listens for clicks on 'start quiz' or 'next question'
+// and either loads the next page or the final page, depending on the user's progress.
 function handlePageLoaderButtonClicked() {
 	$('.page-loader-button').on('click', function(event){
-		console.log("handlePageLoaderButtonClicked() ran.");
 		if (questionCount > 9) {
 			loadResultsPageHtml();	
 			handlePlayAgain();
@@ -154,10 +147,8 @@ function handlePageLoaderButtonClicked() {
 }
 
 // loadQuestionPageHtml() loads the next question's HTML created by the 'generate' 
-// functions. loadQuestionPageHtml() then calls handleAnswerClick(), which is  a
-// listener for the user clicking an answer in the newly-displayed HTML.
+// functions and then sets off a listener for user answers.
 function loadQuestionPageHtml() {
-	console.log('loadQuestionPageHtml() ran.');
 	$('main').html(generateFullQuestionPageHtml(questionCount));
 	handleAnswerClick();
 }
@@ -165,37 +156,29 @@ function loadQuestionPageHtml() {
 // This function pulls together the three HTML strings for a new answer page 
 // and returns them to be loaded to the page by loadQuestionPageHtml().
 function generateFullQuestionPageHtml() {
-	console.log('generateFullQuestionPageHtml() ran.');
-	const initialHtmlAndImg = generateInitialHtmlAndImg(questionCount);
-	const formAndFinalHtml = generateFormAndFinalHtml(questionCount);
-	const progressAndResultText = generateProgressAndResultText();
+	let initialHtmlAndImg = generateInitialHtmlAndImg(questionCount);
+	let formAndFinalHtml = generateFormAndFinalHtml(questionCount);
+	let progressAndResultText = generateProgressAndResultText();
 	return initialHtmlAndImg+progressAndResultText+formAndFinalHtml; 
 }
 
 // First of three functions to generate next question page HTML.
-// generateInitialHtmlAndImg() uses the question number (questionCount) to select the
-// image fir the next question from quizArray.  quizArray contains the data for each
-// question in the order they appear in the quiz.
+// Selects the appropriate image from quizArray.
 function generateInitialHtmlAndImg() {
-	console.log('generateInitialHtmlAndImg running.');
-	const dogImgTag = quizData[questionCount].imageLink;
-	const initialHtmlAndImg =  
+	let dogImgTag = quizData[questionCount].imageLink;
+	let html =  
 	`<div class="col-2">
 		<div class="col-8 center-div">
 			${dogImgTag} </br>
 			<input type="button"  class="button-next page-loader-button hidden" value="Next"></input> </br>
 			`;
-	return initialHtmlAndImg;
+	return html;
 }
 
-// Secomd of three functions to generate next question page HTML.
-// generateFormAndFinalHtml() uses the questionCount variable to reference the available 
-// answers from the current question's object in quizData. 
-// The HTML classes '.js-option1', '.js-option2' etc correspond to 'option1', 'option2' keys in
-// the object for each question within quizData. See the next comment for more detail.
+// Second of three functions to generate next question page HTML.
+// Uses the questionCount variable to get the answer to the current question.
 function generateFormAndFinalHtml() {
-	console.log('generateFormAndFinalHtml() ran.');
-	const formAndFinalHtml = 
+	let html = 
 	`
 					<form>
 							<input type="button"  name="Answer button - ${quizData[questionCount].option1}" class="button-answer js-option1" value="${quizData[questionCount].option1}"></input> 
@@ -209,21 +192,16 @@ function generateFormAndFinalHtml() {
 			<div class="col-2">
 			</div>
 	`;
-	return formAndFinalHtml;
+	return html;
 }
 
 // Third of three functions to generate next question page HTML.
-// generateProgressAndResultText() uses the values stored in the variables questionCount 
-// and score to display progrtess so far in the quiz.
-// Note that the resulting <p> element has the class '.progress-and-result'.  This is 
-// because this <p> element will be replaced with a 'correct' or 'incorrect' message  
-// when the user clicks an answer in the quiz.
+// Displays progress so far in the quiz.
 function generateProgressAndResultText() {
-	console.log('generateProgressAndResultText() ran.')
-	const progressAndResultText =
+	let html =
 	`<p class="progress-and-result">Question ${questionCount+1}/10 (${score} correct so far)</p>
 	`
-	return progressAndResultText;
+	return html;
 }
 
 // As mentioned in the last comment, each object in quizData has an 'answer' key, which
@@ -240,23 +218,20 @@ function generateProgressAndResultText() {
 		"option4": "Border Terrier",
 	}
 */
-
 function handleAnswerClick() {
 	$('.button-answer').one('click', function(event) {
-		console.log('handleAnswerClick() ran.');
 
 		// HTML class names for input button option numbers are prefixed with 'js-' (eg 'js-option1')
 		// So this adjustment is made during the assignment for the variable classNameOfCorrectAnswer.
-		const classNameOfCorrectAnswer = 'js-' + quizData[questionCount].answer;
+		let classNameOfCorrectAnswer = 'js-' + quizData[questionCount].answer;
 
 		// correctButton is assigned a reference to the 'correct answer' button.
-		const correctButton = $('form').find('.'+ classNameOfCorrectAnswer);
+		let correctButton = $('form').find('.'+ classNameOfCorrectAnswer);
 
 		// userAnswer is assigned the button clicked by the user...
-		const userAnswer = event.currentTarget;
+		let userAnswer = event.currentTarget;
 
-		// loadAnswerResultHtml() alters the button css styling to show whether the user is right/wrong.
-		// For more details, see the next function comments. 
+		// Alters the button css styling to show whether the user is right/wrong.
 		loadAnswerResultHtml(userAnswer, classNameOfCorrectAnswer, correctButton);
 		revealNextButton();
 		$(".button-answer").off("click");
@@ -266,21 +241,16 @@ function handleAnswerClick() {
 
 // This function loads the appropriate HTML when the user clicks an answer button.
 function loadAnswerResultHtml(userAnswer, classNameOfCorrectAnswer, correctButton) {
-	console.log('loadAnswerResultHtml() ran.');
 
-	// markAnswer() returns true if the user's answer is correct, and false if not.
-	// So the variable result is assigned either true or false.
-	const result = markAnswer(userAnswer, classNameOfCorrectAnswer, correctButton);
+	// Returns true if the user's answer is correct, and false if not.
+	let result = markAnswer(userAnswer, classNameOfCorrectAnswer, correctButton);
 	
-	// giveFeedback() replaces the progress text with a 'correct' or 'incorrect' message, depending
-	// on whether the user has clicked the correct button.
+	// Replaces .progress-and-result text with either a 'correct' or 'incorrect' message.
 	giveFeedback(result, userAnswer, correctButton);
 
-	// Here, the current function loadAnswerResultHtml() alters the button css styling to show 
-	// whether the user is right/wrong.  
 	// If the user clicks the wrong button, it is highlighted red and the correct answer is 
-	// highlighted green.  If the user clicks the right button, it is highlighted in green and the
-	// variable score is incremented by 1. 
+	// highlighted green.  If the user clicks the right button, it is highlighted in green
+	// and the variable score is incremented by 1. 
 	if (result) {
 		score++;
 	} else {
@@ -289,41 +259,23 @@ function loadAnswerResultHtml(userAnswer, classNameOfCorrectAnswer, correctButto
 	$(correctButton).addClass('correct');
 }
 
-// markAnswer() returns true if the user's answer is correct, and false if not.
-// This value is assigned to the variable result in the above function.
+// Returns true if the user's answer is correct, and false if not.
 function markAnswer(userAnswer, classNameOfCorrectAnswer, correctButton) {
-	console.log('checkAnswer() ran.');
-	if ($(userAnswer).hasClass(classNameOfCorrectAnswer)) {
-		return true;
-	} else {
-		return false;
-	}
+	return $(userAnswer).hasClass(classNameOfCorrectAnswer)
 }
 
-// The 'next' button element is intially assigned the CSS property 'display: hidden;'
-// by default through the class '.hidden'. Once the user clicks an answer, the 
-// '.hidden' class is removed from the 'next'  button element to allow the user to 
-// click through to the next question.
 function revealNextButton() {
-	console.log('revealNextButton() ran.');
-	const nextButton = $('main').find('.button-next');
-	$(nextButton).removeClass('hidden');
+	$('.button-next').removeClass('hidden');
 	// handlePageLoaderButtonClicked() - the same function that listens for clicks on
 	// the 'start' button at the beginning of the quiz.  
 	// This calls an event listener for the user clicking the 'next' button.  
-	// This will set off the processes that cause the next question's HTML page to load.
-	// It also checks whether the quiz has reached the last question, and, if so, loads
-	// the results page (see comments on loadsResultsPage(), below).
 	handlePageLoaderButtonClicked();
 }
 
-// giveFeedback() replaces the progress text with a 'correct' or 'incorrect' message, 
+// Replaces the progress text with a 'correct' or 'incorrect' message, 
 // depending on whether the user has clicked the correct button. 
-// The variable result is created in loadAnswerResultHtml().  It stores the value 'true' 
-// or 'false', depending on whether the user has clicked the correct answer.
 function giveFeedback(result, userAnswer, correctButton) {
-	console.log('giveFeedback() ran.');
-	const htmlToReplaceWithFeedback = $('.progress-and-result');
+	let htmlToReplaceWithFeedback = $('.progress-and-result');
 	if (result) {
 		htmlToReplaceWithFeedback.text(`That's right - it's a ${$(userAnswer).val()}!`);
 	} else {
@@ -331,30 +283,16 @@ function giveFeedback(result, userAnswer, correctButton) {
 	}
 }
 
-// loadResultsPageHtml() is called when the user clifcks 'next' on the final question.
-// The function loads the final page html, displaying the user's score,
-// a 'success' or 'failure' message and the randomly selected gif.  
-// The object for each gif within successGifs and failureGifs takes the following form:
-/*
-		{
-			imageLink: 'https://media.giphy.com/media/14pKVNqXY40EVi/giphy.gif',
-			alt: 'Gif animation of a dog with a stick in its mouth walking into a fence',
-		},
-*/ 
+// Called when the user clicks 'next' on the final question. 
 function loadResultsPageHtml() {
-	console.log('loadResultsPageHtml() ran.');
 	
-	// pickRandomGif() assigns to the variable finalGif a randomly selected 
-	// gif.  If the user scores over 6/10, the gif is chosen from successGifs.
-	// Otherwise, it is chose from failureGifs.  . 
+	// Assigns to the variable finalGif a randomly selected gif
 	let finalGif = pickRandomGif();
 
-	// pickFeedbackText() is similar to the above, but assigns the variable
-	// finalWord a 'success' or 'failure' message depending on the user's score. 
+	// Assigns a 'success' or 'failure' message depending on the user's score. 
 	let finalWord = pickFeedbackText();
 
-	// The function then loads the final page html, displaying the user's 
-	// score, a 'success' or 'failure' message and the randomly selected gif. 
+	// Loads the final page html
 	$('main').html(
 `<h2 class="heading-success-failure">${score}/10<br>${finalWord}</h2>
 			<img class="img-success-failure" src="${finalGif.imageUrl}" alt="${finalGif.alt}">
@@ -363,23 +301,17 @@ function loadResultsPageHtml() {
 		)
 }
 
-// pickRandomGif() assigns to the variable finalGif a randomly selected 
-// gif.  If the user scores over 6/10, the gif is chosen from successGifs.
-// Otherwise, it is chose from failureGifs.  
-// pickRandomGif() also assigns the variable finalWord a 'success' or 
-// 'failure' message depending on their score. 
+// Assigns an appropriate feedback message. 
 function pickFeedbackText() {
-	console.log('pickRandomGif() ran.');
 	if (score > 6) {
 		return "Congratulations!";
 	} else {
 		return "Bad luck!";
 	}
-
 }
 
+// Randomly selects an appropriate gif
 function pickRandomGif() {
-	console.log('pickRandomGif() ran.');
 	if (score > 6) {
 		return successGifs[Math.floor(Math.random()*3)];
 	} else {
@@ -391,7 +323,6 @@ function pickRandomGif() {
 // Clicking the 'play again' button will reset the score and questionCount,
 // and then reload the quiz html from the first question.
 function handlePlayAgain() {
-	console.log('handlePlayAgain() ran.');
 	score = 0;
 	questionCount = 0;
 	$('.button-start-again').on('click', function(event) {
