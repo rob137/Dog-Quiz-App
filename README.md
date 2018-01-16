@@ -1,3 +1,3 @@
-## QUIZ app - exercise for improving jQuery skills
+## Practising some simple asynchronous stuff
 
 https://rob137.github.io/Dog-Quiz-App/
